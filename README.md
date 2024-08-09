@@ -1,0 +1,2 @@
+# ADBSensor
+一个基于最新Home Assistant的AndroidTV组件实现的ADB传感器，主要作用是使用adb命令获取安卓设备的一些状态，用于联动。之所以不是通过安装Home Assistant agent获取安卓设备的传感器，完全是为了省电，不想装多余的APP。
