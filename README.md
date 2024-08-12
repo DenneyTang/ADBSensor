@@ -62,9 +62,13 @@ sensor:
 
 ## 配置选项说明
 name: 传感器的名称
+
 entity_id: 要监控的 Android TV 或 Android 设备的实体 ID，需要你提前在homeassistant的集成中将Android设备添加后，获取该entity_id。
+
 scan_interval: 扫描间隔（秒）
+
 adb_command: 要执行的 ADB 命令模板：其中”{grep_keywords}“变量需要保留用于检索关键字；其中"sed 's/\x1b[[0-9;]*m//g"建议保留用于去除多余的字体颜色特殊字符确保grep命中准确。其他内容可以依据自己情况编写查询命令。
+
 keywords: 要监控的关键词和对应的关键字名称。可以同时监控多个关键字，格式为：‘待搜索的关键字’: '检索后给这个关键字一个关键字显示到属性中供后续调用'。'YOUR KEYWORDS1 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS1'S NAME YOU WANA SHOW IN Attributes'
 
 ## 使用方法
