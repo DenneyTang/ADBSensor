@@ -47,16 +47,25 @@ sensor:
       - name: "ADB Sensor 1"
         entity_id: media_player.android_tv_1
         scan_interval: 120
-        adb_command: "dumpsys input | grep -iE '{grep_keywords}' | sed 's/\x1b[[0-9;]*m//g'"
-        keywords:
-          'YOUR KEYWORDS1 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS1'S NAME YOU WANA SHOW IN Attributes'
-          'YOUR KEYWORDS2 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS2'S NAME YOU WANA SHOW IN Attributes'
-      - name: "ADB Sensor 2"
-        entity_id: media_player.android_tv_2
-        scan_interval: 180
-        adb_command: "dumpsys bluetooth_manager | grep -iE '{grep_keywords}'"
-        keywords:
-          'YOUR KEYWORDS1 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS1'S NAME YOU WANA SHOW IN Attributes'
+        adb_commands
+          - command: "dumpsys input | grep -iE '{grep_keywords}' | sed 's/\x1b[[0-9;]*m//g'"
+            keywords:
+               'YOUR KEYWORDS1 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS1'S NAME YOU WANA SHOW IN Attributes'
+               'YOUR KEYWORDS2 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS2'S NAME YOU WANA SHOW IN Attributes'
+          - command: "dumpsys bluetooth_manager | grep -iE '{grep_keywords}'"
+            keywords:
+               'YOUR KEYWORDS3 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS3'S NAME YOU WANA SHOW IN Attributes'
+
+      - name: "Mate30Pro_ADBSensor"
+        entity_id: media_player.android_tv
+        scan_interval: 30
+        adb_commands:
+          - command: "dumpsys input | grep -iE '{grep_keywords}' | sed 's/\x1b[[0-9;]*m//g'"
+            keywords:
+              'UniqueId:7': 'WatchGT2'
+          - command: "dumpsys media_session | sed -n '/QQMusicMediaSession.*/,/state=PlaybackState/p' | grep 'state=PlaybackState.*{grep_keywords}' | grep -o 'state=PlaybackState.*' | sed 's/\x1b[[0-9;]*m//g'"
+            keywords:
+              'state=3': 'QQMusic'
 ```
 
 ## Configuration Option Explanations
@@ -66,7 +75,7 @@ entity_id: The entity ID of the Android TV or Android device to be monitored. Yo
 
 scan_interval: Scan interval (seconds)
 
-adb_command: The ADB command template to be executed: The "{grep_keywords}" variable needs to be retained for keyword retrieval; The "sed 's/\x1b[[0-9;]*m//g" is recommended to be retained to remove excess font color special characters to ensure accurate grep hits. Other contents can be written as query commands according to your own situation.
+command: The ADB command template to be executed: The "{grep_keywords}" variable needs to be retained for keyword retrieval; The "sed 's/\x1b[[0-9;]*m//g" is recommended to be retained to remove excess font color special characters to ensure accurate grep hits. Other contents can be written as query commands according to your own situation.
 
 keywords: The keywords to be monitored and the corresponding keyword names. Multiple keywords can be monitored at the same time. The format is: 'Keyword to be searched': 'A keyword name given to this keyword after retrieval for subsequent calls'. 'YOUR KEYWORDS1 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS1'S NAME YOU WANA SHOW IN Attributes'
 
