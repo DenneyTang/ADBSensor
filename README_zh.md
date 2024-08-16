@@ -48,16 +48,27 @@ sensor:
       - name: "ADB Sensor 1"
         entity_id: media_player.android_tv_1
         scan_interval: 120
-        adb_command: "dumpsys input | grep -iE '{grep_keywords}' | sed 's/\x1b[[0-9;]*m//g'"
-        keywords:
-          'YOUR KEYWORDS1 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS1'S NAME YOU WANA SHOW IN Attributes'
-          'YOUR KEYWORDS2 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS2'S NAME YOU WANA SHOW IN Attributes'
-      - name: "ADB Sensor 2"
-        entity_id: media_player.android_tv_2
-        scan_interval: 180
-        adb_command: "dumpsys bluetooth_manager | grep -iE '{grep_keywords}'"
-        keywords:
-          'YOUR KEYWORDS1 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS1'S NAME YOU WANA SHOW IN Attributes'
+        adb_commands
+          - command: "dumpsys input | grep -iE '{grep_keywords}' | sed 's/\x1b[[0-9;]*m//g'"
+            keywords:
+               'YOUR KEYWORDS1 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS1'S NAME YOU WANA SHOW IN Attributes'
+               'YOUR KEYWORDS2 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS2'S NAME YOU WANA SHOW IN Attributes'
+          - command: "dumpsys bluetooth_manager | grep -iE '{grep_keywords}'"
+            keywords:
+               'YOUR KEYWORDS3 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS3'S NAME YOU WANA SHOW IN Attributes'
+
+      - name: "Mate30Pro_ADBSensor"
+        entity_id: media_player.android_tv
+        scan_interval: 30
+        adb_commands:
+          - command: "dumpsys input | grep -iE '{grep_keywords}' | sed 's/\x1b[[0-9;]*m//g'"
+            keywords:
+              'UniqueId:7': 'WatchGT2'
+          - command: "dumpsys media_session | sed -n '/QQMusicMediaSession.*/,/state=PlaybackState/p' | grep 'state=PlaybackState.*{grep_keywords}' | grep -o 'state=PlaybackState.*' | sed 's/\x1b[[0-9;]*m//g'"
+            keywords:
+              'state=3': 'QQMusic'
+
+
 ```
 
 ## 配置选项说明
@@ -67,7 +78,7 @@ entity_id: 要监控的 Android TV 或 Android 设备的实体 ID，需要你提
 
 scan_interval: 扫描间隔（秒）
 
-adb_command: 要执行的 ADB 命令模板：其中”{grep_keywords}“变量需要保留用于检索关键字；其中"sed 's/\x1b[[0-9;]*m//g"建议保留用于去除多余的字体颜色特殊字符确保grep命中准确。其他内容可以依据自己情况编写查询命令。
+command: 要执行的 ADB 命令模板：其中”{grep_keywords}“变量需要保留用于检索关键字；其中"sed 's/\x1b[[0-9;]*m//g"建议保留用于去除多余的字体颜色特殊字符确保grep命中准确。其他内容可以依据自己情况编写查询命令。
 
 keywords: 要监控的关键词和对应的关键字名称。可以同时监控多个关键字，格式为：‘待搜索的关键字’: '检索后给这个关键字一个关键字显示到属性中供后续调用'。'YOUR KEYWORDS1 YOU WANA TO GREP IN ADB_Command': 'YOUR KEYWORDS1'S NAME YOU WANA SHOW IN Attributes'
 
